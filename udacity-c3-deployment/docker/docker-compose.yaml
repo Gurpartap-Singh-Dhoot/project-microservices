@@ -23,7 +23,7 @@ services:
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
   backend-feed:
-    image: wallacewong82/udacity-restapi-feed
+    image: sgurpartap675/udacity-restapi-feed
     volumes:
       - /usr/bin/aws
     environment:
@@ -37,6 +37,6 @@ services:
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
   frontend:
-    image: wallacewong82/udacity-frontend:prod
+    image: sgurpartap675/udacity-frontend
     ports:
       - "8100:80"
