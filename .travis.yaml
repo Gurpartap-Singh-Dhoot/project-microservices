@@ -15,10 +15,14 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  - docker build -t Project_GD .
-  - docker tag project_gd YOUR_DOCKER_HUB/project_gd:latest
-
-# Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
+  - cd $TRAVIS_BUILD_DIR/udagram-api
+  - docker build -t "$DOCKER_USER"/api:latest .
+  - cd $TRAVIS_BUILD_DIR/project_gd
+  - docker build -t "$DOCKER_USER"/project:latest .
+  - cd $TRAVIS_BUILD_DIR/udagram-frontend
+  - docker build -t "$DOCKER_USER"/frontend:latest .
 after_success:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push YOUR_DOCKER_HUB/project_gd:latest
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+  - docker push "$DOCKER_USER"/api:latest
+  - docker push "$DOCKER_USER"/project:latest
+  - docker push "$DOCKER_USER"/frontend:latest
