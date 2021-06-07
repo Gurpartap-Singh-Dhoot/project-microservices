@@ -15,11 +15,11 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  - cd $TRAVIS_BUILD_DIR/udacity-restapi-user
+  - cd $TRAVIS_BUILD_DIR/udacity-c3-restapi-user
   - docker build -t "$DOCKER_USER"/restapi-user:latest .
-  - cd $TRAVIS_BUILD_DIR/udacity-restapi-feed
+  - cd $TRAVIS_BUILD_DIR/udacity-c3-restapi-feed
   - docker build -t "$DOCKER_USER"/restapi-feed:latest .
-  - cd $TRAVIS_BUILD_DIR/udacity-frontend
+  - cd $TRAVIS_BUILD_DIR/udacity-c3-frontend
   - docker build -t "$DOCKER_USER"/frontend:latest .
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
