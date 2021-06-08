@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: default
+data:
+  JWT_SECRET: "helloworld"
+  POSTGRESS_USERNAME: udagramprojectgd
+  POSTGRESS_PASSWORD: udagramprojectgd
+  POSTGRESS_DATABASE: udagramprojectgd
+  POSTGRESS_HOST: udagramprojectgd.czwnd9cqqfoh.us-east-2.rds.amazonaws.com
+  AWS_REGION: us-east-2
+  AWS_PROFILE: udagramprojectgd
+  AWS_MEDIA_BUCKET: project-bucket-gd
+  URL: http://localhost:8080

@@ -5,6 +5,10 @@ metadata:
     service: backend-user
   name: backend-user
 spec:
+  volumes:
+      - name: configmap-volume
+        configMap:
+         name: env-config
   progressDeadlineSeconds: 2147483647
   replicas: 1
   revisionHistoryLimit: 2147483647

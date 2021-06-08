@@ -1,9 +1,9 @@
-version: "3"
+version: "2.3"
 services:
   reverseproxy:
     build:
       context: .
-    image: sgurpartap675/reverseproxy
+    image: sgurpartap675/udacity-reverseproxy
   backend_user:
     build:
       context: ../../udacity-c3-restapi-user

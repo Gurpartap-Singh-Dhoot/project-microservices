@@ -5,6 +5,10 @@ metadata:
     service: backend-feed
   name: backend-feed
 spec:
+  volumes:
+      - name: configmap-volume
+        configMap:
+         name: env-config
   progressDeadlineSeconds: 2147483647
   replicas: 1
   revisionHistoryLimit: 2147483647
@@ -22,19 +26,6 @@ spec:
         service: backend-feed
     spec:
       containers:
-      - image: sgurpartap675/udacity-restapi-feed
-        imagePullPolicy: Always
-        name: reverseproxy
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        resources:
-          limits:
-            cpu: 500m
-            memory: 1Gi
-          requests:
-            cpu: 250m
-            memory: 64Mi
       - env:
         - name: URL
           valueFrom:
