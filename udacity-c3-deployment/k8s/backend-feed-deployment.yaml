@@ -1,11 +1,21 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     service: backend-feed
   name: backend-feed
 spec:
+  progressDeadlineSeconds: 2147483647
   replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      service: backend-feed
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -13,77 +23,88 @@ spec:
     spec:
       containers:
       - image: sgurpartap675/udacity-restapi-feed
-        name: backend-feed
         imagePullPolicy: Always
+        name: reverseproxy
+        ports:
+        - containerPort: 8080
+          protocol: TCP
         resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
           limits:
-            memory: "1024Mi"
-            cpu: "500m"
-        env:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+      - env:
         - name: URL
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: URL
+              name: env-config
         - name: AWS_MEDIA_BUCKET
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: AWS_MEDIA_BUCKET
+              name: env-config
         - name: AWS_PROFILE
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: AWS_PROFILE
+              name: env-config
         - name: AWS_REGION
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: AWS_REGION
+              name: env-config
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: JWT_SECRET
+              name: env-config
         - name: POSTGRESS_DATABASE
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: POSTGRESS_DATABASE
+              name: env-config
         - name: POSTGRESS_HOST
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: POSTGRESS_HOST
+              name: env-config
         - name: POSTGRESS_PASSWORD
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: POSTGRESS_PASSWORD
+              name: env-config
         - name: POSTGRESS_USERNAME
           valueFrom:
             configMapKeyRef:
-              name: env-config
               key: POSTGRESS_USERNAME
-        # - name: POSTGRESS_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: env-secret
-        #       key: POSTGRESS_PASSWORD
-        # - name: POSTGRESS_USERNAME
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: env-secret
-        #       key: POSTGRESS_USERNAME
+              name: env-config
+        image: sgurpartap675/udacity-restapi-feed
+        imagePullPolicy: Always
+        name: backend-feed
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
         volumeMounts:
-        - name: aws-secret
-          mountPath: "~/.aws/"
+        - mountPath: ~/.aws/
+          name: aws-secret
           readOnly: true
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
       volumes:
       - name: aws-secret
         secret:
+          defaultMode: 420
           secretName: aws-secret
+status: {}
