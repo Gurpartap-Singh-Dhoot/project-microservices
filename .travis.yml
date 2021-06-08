@@ -16,13 +16,13 @@ before_script:
 script:
   - docker --version # print the version for logging
   - cd $TRAVIS_BUILD_DIR/udacity-c3-restapi-user
-  - docker build -t sgurpartap675/restapi-user:latest .
+  - docker build -t "$DOCKER_USER"/restapi-user:latest .
   - cd $TRAVIS_BUILD_DIR/udacity-c3-restapi-feed
-  - docker build -t sgurpartap675/restapi-feed:latest .
+  - docker build -t "$DOCKER_USER"/restapi-feed:latest .
   - cd $TRAVIS_BUILD_DIR/udacity-c3-frontend
-  - docker build -t sgurpartap675/frontend:latest .
+  - docker build -t "$DOCKER_USER"/frontend:latest .
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" docker.io
-  - docker push sgurpartap675/restapi-user:latest
-  - docker push sgurpartap675/restapi-feed:latest
-  - docker push sgurpartap675/frontend:latest
+  - docker push "$DOCKER_USER"/restapi-user:latest
+  - docker push "$DOCKER_USER"/restapi-feed:latest
+  - docker push "$DOCKER_USER"/frontend:latest
